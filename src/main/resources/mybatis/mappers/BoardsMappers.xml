@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.skuniv.makeus.dao.BoardsMapper">
+    <select id="boardCount" parameterType="int" resultType="int">
+    SELECT
+    COUNT(*)
+    FROM board
+    WHERE
+    fk_boardNo=#{boardNo}
+    </select>
+
+    <select id="boardList" parameterType="int" resultType="boards">
+    SELECT
+    *
+    FROM board
+    WHERE
+    fk_boardNo=#{boardNo}
+    </select>
+
+    <select id="boardDetail" parameterType="int" resultType="boards">
+    SELECT
+    *
+    FROM board
+    WHERE
+    postNo = #{postNo}
+    </select>
+
+    <!--<insert id="boardInsert" parameterType="board">-->
+    <!--INSERT INTO-->
+    <!--board (post_no, post_title,CONTENT,WRITER,REG_DATE)-->
+    <!--VALUES(#{bno},#{subject},#{content},#{writer},now())-->
+    <!--</insert>-->
+
+    <!--<update id="boardUpdate" parameterType="board">-->
+        <!--UPDATE board-->
+        <!--SET-->
+        <!--<if test="subject != null">-->
+            <!--SUBJECT = #{subject}-->
+        <!--</if>-->
+        <!--<if test="subject != null and content != null">,</if>-->
+        <!--<if test="content != null">-->
+            <!--CONTENT = #{content}-->
+        <!--</if>-->
+        <!--WHERE BNO = #{bno}-->
+    <!--</update>-->
+
+    <!--<delete id="boardDelete" parameterType="int">-->
+    <!--DELETE FROM board WHERE BNO = #{bno}-->
+    <!--</delete>-->
+</mapper>

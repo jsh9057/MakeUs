@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skuniv.makeus.dao.UsersMapper">
+	
+    <select id="signin"  resultType="users" >
+        SELECT * FROM users WHERE userId= #{userId} AND password= #{password}
+    </select>
+    
+    <select id="getUsersbyNick" resultType="users">
+    	SELECT * FROM users WHERE nick= #{nick}
+    </select>
+    
+    <select id="getUsersbyUserId" resultType="users">
+    	SELECT * FROM users WHERE userId= #{userId}
+    </select>
+    
+    <insert id="registUser" parameterType="users">
+    	INSERT INTO users (userId,nick,name,password,phone,email,grade)
+    	values(#{userId},#{nick},#{name},#{password},#{phone},#{email},#{grade})
+    </insert>
+</mapper>

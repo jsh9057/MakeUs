@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.skuniv.makeus.dao.Board_ManagementMapper">
+    <select id="loadGradeMenuList" resultType="Board_Managament">
+    SELECT
+    *
+    FROM board_management
+    WHERE
+    boardNo BETWEEN 1001 AND 2000 
+    </select>
+    
+    <select id="loadCommonMenuList" resultType="Board_Managament">
+    SELECT
+    *
+    FROM board_management
+    WHERE
+    boardNo BETWEEN 2001 AND 3000 
+    </select>
+    
+    <select id="loadOtherMenuList" resultType="Board_Managament">
+    SELECT
+    *
+    FROM board_management
+    WHERE
+    boardNo BETWEEN 3001 AND 6000
+    </select>
+    
+</mapper>
