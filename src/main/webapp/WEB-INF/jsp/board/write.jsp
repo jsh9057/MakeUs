@@ -1,3 +1,4 @@
+<%@ page import="com.skuniv.makeus.dto.Users" %>
 <!doctype html>
 <html lang="ko">
 
@@ -16,6 +17,16 @@
 <link rel="stylesheet" href="../assets/libs/css/style.css">
 <link rel="stylesheet"
 	href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+	<script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+	<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+	<script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+	<script src="../assets/libs/js/main-js.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){$("#header").load("/header");});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){$("#menu").load("/menu");});
+	</script>
 </head>
 
 <body>
@@ -50,18 +61,153 @@
 								<b>글쓰기</b>
 							</h5>
 							<div class="card-body">
-								<form>
+								<form id = "myform" method="post" onsubmit="return false;" action="/writedo" enctype="multipart/form-data">
 									<div class="form-group">
-										<label class="col-form-label" for="inputText3">제목</label> <input
-											class="form-control" id="inputText3" type="text">
+										<label class="col-form-label" for="titleInput"  >제목</label>
+										<input class="form-control" id="titleInput" name = "title" type="text">
 									</div>
 									<div class="form-group">
-										<label for="exampleFormControlTextarea1">내용</label>
-										<textarea class="form-control" id="exampleFormControlTextarea1" rows="20"></textarea>
+										<label for="content">내용</label>
+										<textarea class="form-control" id="content" name ="content" rows="20"></textarea>
+									</div>
+
+									<%--	#############     이미지 업로드     ############         --%>
+
+									<div class="card-header p-4" >
+										<h5><b>이미지 업로드</b></h5>
+                                        <p class="alert alert-danger"><b>이미지를 삭제하려면 이미지를 클릭하세요!</b></p>
+										<div class="inputWrap">
+											<a href="javascript:" onclick="fileUpload();" class="btn btn-primary">이미지 업로드</a>
+											<input type="file" id ="inputImges_0" name = "imgfiles"  hidden/>
+
+										</div>
+										<div class="imgsWrap">
+											<img id="img"/>
+										</div>
+									</div>
+									<%--   #################	파일업로드   #########################  --%>
+									<div class="card-header p-4" >
+										<h5><b> 첨부파일 </b></h5>
+										<div id = "fileDiv">
+										<p>
+                                            <input type="file" name="files" multiple="multiple" />
+											<a name="delete" href="#" class="badge badge-danger">파일삭제</a><br/>
+										</p>
+										</div>
+										<br/>
+										<a href="#this" id="addfile" class="badge badge-info" onclick="fileAdd()" >파일 추가하기</a>
+									</div>
+
+									<input type="hidden" name = "boardNo" value="${boardNo}">
+									<br/>
+
+
+									<div align="right">
+										<button type="button" class="btn btn-primary" onclick="wirte()">작성</button>
+										<a class="btn btn-danger" href="#" onclick="history.back(-1);">취소</a>
 									</div>
 								</form>
 							</div>
 						</div>
+						<script type="text/javascript">
+							var sel_files= [];
+							var index = 0;
+
+							$(document).ready(function () {
+								$("#inputImges_"+index).on("change",hadleImgsFileSelect);
+							});
+
+
+							function fileUpload() {
+								console.log("fileUpload");
+								var imginput = "#inputImges_"+index;
+								console.log(imginput);
+								$(imginput).trigger("click");
+							}
+
+
+							function hadleImgsFileSelect(e) {
+
+								var files = e.target.files;
+								var filesArr = Array.prototype.slice.call(files);
+
+								filesArr.forEach(function (f) {
+									if(!f.type.match("image.*")){
+										alert("확장자는 이미지 확장자만 가능합니다.");
+										return false;
+									}
+
+									sel_files.push(f);
+
+									var reader = new FileReader();
+
+									reader.onload = function (e) {
+										var html = "<a href=\"javascript:void(0);\" onclick=\"deleteImageAction("+index+")\" id=\"img_id_"+index +"\"><img src=\""+e.target.result+"\"data-file='"+f.name+"' class='selProductFile' title='Click to remove' style=\"max-width: 50%; height: auto;\"></a>";
+										$(".imgsWrap").append(html);
+
+
+									}
+									reader.readAsDataURL(f);
+								});
+										index++;
+										var inputHtml = "<input type='file' id='inputImges_"+index+"' name='imgfiles'  hidden />";
+										console.log(inputHtml);
+										$(".inputWrap").append(inputHtml);
+										$("#inputImges_"+index).on("change",hadleImgsFileSelect);
+							}
+
+							function deleteImageAction(index) {
+
+								console.log("index : "+index);
+								sel_files.splice(index-1,1,null);
+								var img_id= "#img_id_" + index;
+
+								var input_id = "#inputImges_"+(index-1);
+								$(img_id).remove();
+								$(input_id).remove();
+								console.log(sel_files);
+							}
+							function fileDelete(obj) {
+								obj.parent().remove();
+							}
+
+							function fileAdd() {
+								var str = "<p><input type='file' name='files'/>\t<a name=\"delete\" href=\"#\" class=\"badge badge-danger\">파일삭제</a><br/></p>";
+								$("#fileDiv").append(str);
+
+								$("a[name='delete']").on("click",function (e) {
+									e.preventDefault();
+									fileDelete($(this));
+								});
+							}
+
+							function imgSubmit() {
+
+								for(var i=0, len=sel_files.length; i<len; i++){
+									var name = "image_"+1;
+									if(sel_files[i]!=null)
+										append(name,sel_files[i]);
+								}
+							}
+
+							function wirte() {
+
+								if($("#titleInput").val()==""){
+									alert("제목을 작성해 주십시오.");
+									return ;
+								}
+
+								var str =$("#content").val();
+								if(str==""){
+									alert("내용을 작성해 주십시오.");
+									return ;
+								}
+
+								$("#content").val(str);
+								$("#myform").removeAttr('onsubmit');
+								$("#myform").submit();
+							}
+						</script>
 					</div>
 				</div>
 			</div>
@@ -94,16 +240,7 @@
 	<!-- end main wrapper -->
 	<!-- ============================================================== -->
 	<!-- Optional JavaScript -->
-	<script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-	<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-	<script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-	<script src="../assets/libs/js/main-js.js"></script>
-	<script type="text/javascript">
-	$(document).ready(function(){$("#header").load("/header");});
-	</script>
-	<script type="text/javascript">
-	$(document).ready(function(){$("#menu").load("/menu");});
-	</script>
+
 </body>
 
 </html>

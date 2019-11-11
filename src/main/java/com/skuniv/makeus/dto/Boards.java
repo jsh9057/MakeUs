@@ -14,7 +14,33 @@ public class Boards {
 	int fk_boardNo;
 	int fk_classId;
 	int fk_groupId;
-	
+	boolean file;
+	boolean img;
+	int commentCount;
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public boolean isImg() {
+		return img;
+	}
+
+	public void setImg(boolean img) {
+		this.img = img;
+	}
+
+	public boolean isFile() {
+		return file;
+	}
+	public void setFile(boolean file) {
+		this.file = file;
+	}
+
 	public int getPostNo() {
 		return postNo;
 	}
@@ -33,15 +59,11 @@ public class Boards {
 	public void setPostTitle(String postTitle) {
 		this.postTitle = postTitle;
 	}
-	public String getPostContents() {
-		return postContents;
-	}
+	public String getPostContents() { return postContents; }
 	public void setPostContents(String postContents) {
 		this.postContents = postContents;
 	}
-	public LocalDateTime getPostDate() {
-		return postDate;
-	}
+	public LocalDateTime getPostDate() { return postDate; }
 	public void setPostDate(LocalDateTime postDate) {
 		this.postDate = postDate;
 	}

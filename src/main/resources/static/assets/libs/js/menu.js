@@ -1,76 +1,95 @@
-/**
- * 
- */
 
 
-$(function(){
-	var obj = new Object();
-	return $.ajax({
-		type : 'POST',
-		url : "../rest/grademenu",
-		contentType : "application/json; charset=UTF-8",
-		success:function(data){
-			
-			var tag1="<li class='nav-item'><a class='nav-link' href='";
-			var tag2="'>";
-			var tag3="</a></li>";
-			for(var i=0; i<data.length; i++){
-				var link="../board/"+data[i].boardNo;
-				var name=data[i].boardNm;
-				$("#gradelist").append(tag1+link+tag2+name+tag3);
-			}
 
-		},
-		error : function(error) {
-			console.log(error);
-		}
-	});
-});
+    // <div id="submenu-class" class="collapse submenu" style="">
+    //     <ul class="nav flex-column">
+    //
+    //
+    //         <li class="nav-item"><a class="nav-link" href="#"
+    //                                 data-toggle="collapse" aria-expanded="false"
+    //                                 data-target="#submenu-class-detail" aria-controls="submenu-11">Level
+    //             2</a>
+    //             <div id="submenu-class-detail" class="collapse submenu" style="">
+    //                 <ul class="nav flex-column">
+    //                     <li class="nav-item"><a class="nav-link" href="#">Level
+    //                         1</a></li>
+    //                     <li class="nav-item"><a class="nav-link" href="#">Level
+    //                         2</a></li>
+    //                 </ul>
+    //             </div>
+    //         </li>
+    //
+    //
+    //         <li class="nav-item"><a class="nav-link" href="#"
+    //                                 data-toggle="collapse" aria-expanded="false"
+    //                                 data-target="#submenu-class-detail" aria-controls="submenu-11">Level
+    //             2</a>
+    //             <div id="submenu-class-detail" class="collapse submenu" style="">
+    //                 <ul class="nav flex-column">
+    //                     <li class="nav-item"><a class="nav-link" href="#">Level
+    //                         1</a></li>
+    //                     <li class="nav-item"><a class="nav-link" href="#">Level
+    //                         2</a></li>
+    //                 </ul>
+    //             </div>
+    //         </li>
+    //
+    //
+    //     </ul>
+    // </div>
 
-$(function(){
-	var obj = new Object();
-	return $.ajax({
-		type : 'POST',
-		url : "../rest/commonmenu",
-		contentType : "application/json; charset=UTF-8",
-		success:function(data){
-				
-			var tag1="<li class='nav-item'><a class='nav-link' href='";
-			var tag2="'>";
-			var tag3="</a></li>";
-			for(var i=0; i<data.length; i++){
-				var link="../board/"+data[i].boardNo;
-				var name=data[i].boardNm;
-				$("#commonlist").append(tag1+link+tag2+name+tag3);
-			}
+$(function () {
+    return $.ajax({
+        type: 'POST',
+        url: "../rest/myclass",
+        contentType: "application/json; charset=UTF-8",
+        success: function (myclasslist) {
+            $(function() {
+                return $.ajax({
+                    type: 'POST',
+                    url: "../rest/classmenu",
+                    contentType : "application/json; charset=UTF-8",
+                    success:function (menulist) {
+                        var tag1 =" <li class='nav-item'><a class='nav-link' href='#' data-toggle='collapse' aria-expanded='false'" +
+                            "data-target='#detail_";
+                        var classid;
+                        var tag2 = "' aria-controls='submenu-11'>";
+                        var classnm;
+                        var tag3 = "</a>";
+                        var tag4 = " <div id='detail_"
+                        var tag5 = "' class='collapse submenu' style=''><ul class=\'nav flex-column\'>";
+                        var tag6 = "<li class=\'nav-item\'><a class=\'nav-link\' href='/board/"
+                        var boardno;
+                        var tag6_2 = "'>";
+                        var boardnm ;
+                        var tag7 = "</a></li>";
+                        var result ="";
+                        for(var i=0; i<myclasslist.length; i++){
+                            classid = myclasslist[i].fk_classId;
+                            classnm = myclasslist[i].myclassNm;
+                            result = result + tag1+classid+tag2+classnm+tag3+tag4+classid+tag5;
+                            for(var j=0; j<menulist.length; j++) {
+                                if (menulist[j].fk_classId == myclasslist[i].fk_classId) {
 
-		},
-		error : function(error) {
-			console.log(error);
-		}
-	});
-});
+                                    if(menulist[j].category!=true) {
+                                        boardno = menulist[j].boardNo;
+                                        boardnm = menulist[j].boardNm;
+                                        result = result + tag6 + boardno + tag6_2 + boardnm + tag7;
+                                    }
+                                }
+                            }
+                            result = result + "</ul></div></li>";
+                        }
+                        result =
+                        $('#classmenu').append(result);
+                    }
+                })
 
-//$(function(){
-//	var obj = new Object();
-//	return $.ajax({
-//		type : 'POST',
-//		url : "../rest/othermenu",
-//		contentType : "application/json; charset=UTF-8",
-//		success:function(data){
-//				
-//			var tag1="<li class='nav-item'><a class='nav-link' href='";
-//			var tag2="'>";
-//			var tag3="</a></li>";
-//			for(var i=0; i<data.length; i++){
-//				var link="../board/"+data[i].boardNo;
-//				var name=data[i].boardNm;
-//				$("#otherlist").append(tag1+link+tag2+name+tag3);
-//			}
-//
-//		},
-//		error : function(error) {
-//			console.log(error);
-//		}
-//	});
-//});
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+})
+;

@@ -1,28 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.skuniv.makeus.dao.Board_ManagementMapper">
-    <select id="loadGradeMenuList" resultType="Board_Managament">
+
+    <select id="loadAllList" resultType="Board_Managament">
+    SELECT
+    *
+    FROM board_management
+
+    </select>
+
+    <select id="loadGradeList" resultType="Board_Managament">
     SELECT
     *
     FROM board_management
     WHERE
-    boardNo BETWEEN 1001 AND 2000 
+    boardKind = "gradeBoard"
     </select>
     
     <select id="loadCommonMenuList" resultType="Board_Managament">
     SELECT
     *
-    FROM board_management
+    FROM
+    board_management
     WHERE
-    boardNo BETWEEN 2001 AND 3000 
+    boardKind = "commonBoard"
+    ORDER BY boardIndex
     </select>
     
     <select id="loadOtherMenuList" resultType="Board_Managament">
     SELECT
     *
-    FROM board_management
+    FROM
+    board_management
     WHERE
-    boardNo BETWEEN 3001 AND 6000
+    boardKind = "other"
     </select>
-    
+
+    <select id="loadClassMenuList" resultType="Board_Managament">
+    SELECT
+    *
+    FROM
+    board_management
+    WHERE
+    boardKind = "classBoard"
+    </select>
+    <select id="getfk_classId" parameterType="int" resultType="Int">
+    SELECT
+    fk_classId
+    FROM
+    board_management
+    WHERE
+    boardNo=#{boardNo}
+    </select>
+
+    <select id="getBoard_Management"  parameterType="int" resultType="Board_Managament">
+    SELECT
+    *
+    FROM
+    board_management
+    WHERE boardNo = #{boardNo}
+    </select>
+
+    <insert id="insertClassBoardList" parameterType="Board_Managament" >
+        INSERT INTO board_management (boardNm,C,R,D,fk_classId,fk_classNm,boardKind)
+        values (#{boardNm},#{C},#{R},#{D},#{fk_classId},#{fk_classNm},#{boardKind})
+    </insert>
+
+    <insert id="insertCommonBoard" parameterType="Board_Managament">
+        <if test="fk_parent == 0">
+        INSERT INTO board_management (boardNm,C,R,D, isCategory, boardKind)
+        values (#{boardNm},#{C},#{R},#{D},#{isCategory},#{boardKind})
+        </if>
+        <if test="fk_parent != 0">
+            INSERT INTO board_management (boardNm,C,R,D,fk_parent,isCategory, boardKind)
+            values (#{boardNm},#{C},#{R},#{D},#{fk_parent},#{isCategory}, #{boardKind})
+        </if>
+    </insert>
+
 </mapper>

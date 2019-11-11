@@ -69,7 +69,7 @@ body {
 
 				<div class="form-group">
 					<input class="form-control form-control-lg" id="confirm"
-						required="" placeholder="Confirm">
+						type="password" required="" placeholder="Confirm">
 				</div>
 
 				<div class="form-group">
@@ -109,7 +109,7 @@ body {
 
 			<div class="card-footer bg-white">
 				<p>
-					Already member? <a href="#" class="text-secondary">Login Here.</a>
+					Already member? <a href="signin" class="text-secondary">Login Here.</a>
 				</p>
 			</div>
 

@@ -15,6 +15,8 @@
     FROM board
     WHERE
     fk_boardNo=#{boardNo}
+    ORDER BY
+    postNo DESC
     </select>
 
     <select id="boardDetail" parameterType="int" resultType="boards">
@@ -25,26 +27,64 @@
     postNo = #{postNo}
     </select>
 
-    <!--<insert id="boardInsert" parameterType="board">-->
-    <!--INSERT INTO-->
-    <!--board (post_no, post_title,CONTENT,WRITER,REG_DATE)-->
-    <!--VALUES(#{bno},#{subject},#{content},#{writer},now())-->
-    <!--</insert>-->
+    <insert id="boardInsert" parameterType="boards" useGeneratedKeys="true" keyProperty="postNo">
+    INSERT INTO
+    board (postNm,postTitle,postContents,fk_postNick,fk_postUserId,fk_boardNo, file , img, fk_classId)
+    VALUES(#{postNm},#{postTitle},#{postContents},#{fk_postNick},#{fk_postUserId},#{fk_boardNo},#{file}, #{img}, #{fk_classId})
+    </insert>
 
-    <!--<update id="boardUpdate" parameterType="board">-->
-        <!--UPDATE board-->
-        <!--SET-->
-        <!--<if test="subject != null">-->
-            <!--SUBJECT = #{subject}-->
-        <!--</if>-->
-        <!--<if test="subject != null and content != null">,</if>-->
-        <!--<if test="content != null">-->
-            <!--CONTENT = #{content}-->
-        <!--</if>-->
-        <!--WHERE BNO = #{bno}-->
-    <!--</update>-->
+    <insert id="fileInsert" parameterType="files">
+    INSERT INTO
+    files(fk_postNo, fileNm, fileOriNm, path, size , img)
+    VALUES (#{fk_postNo}, #{fileNm}, #{fileOriNm}, #{path} , #{size} , #{img})
+    </insert>
 
-    <!--<delete id="boardDelete" parameterType="int">-->
-    <!--DELETE FROM board WHERE BNO = #{bno}-->
-    <!--</delete>-->
+    <select id="fileDetail" parameterType="int" resultType="files">
+    SELECT *
+    FROM files
+    WHERE fk_postNo=#{fk_postNo}
+    </select>
+
+    <select id="downFile" parameterType="int" resultType="files">
+    SELECT *
+    FROM files
+    WHERE fileNo=#{fileNo}
+    </select>
+
+    <update id="boardUpdate" parameterType="boards" >
+        UPDATE board
+        SET
+        postTitle = #{postTitle},
+        postContents = #{postContents},
+        file = #{file},
+        img = #{img}
+        WHERE postNo = #{postNo}
+    </update>
+
+    <delete id="boardDelete" parameterType="int">
+    DELETE FROM board WHERE postNo = #{postNo}
+    </delete>
+
+    <delete id="fileDelete" parameterType="int">
+    DELETE FROM files WHERE fileNo = #{fileNo}
+    </delete>
+
+    <update id="upHit" parameterType="int">
+        UPDATE board
+        SET hits=hits+1
+        WHERE postNo = #{postNo}
+    </update>
+
+    <select id="myPost" parameterType="int" resultType="boards">
+    SELECT *
+    FROM board
+    WHERE fk_boardNo=#{boardNo} AND fk_postUserId=#{fk_postUserId}
+    </select>
+
+    <update id="upComment" parameterType="int">
+        UPDATE board
+        SET commentCount = commentCount+ #{count}
+        WHERE postNo = #{postNo}
+    </update>
+
 </mapper>

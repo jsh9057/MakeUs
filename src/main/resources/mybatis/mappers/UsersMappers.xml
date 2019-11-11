@@ -18,4 +18,23 @@
     	INSERT INTO users (userId,nick,name,password,phone,email,grade)
     	values(#{userId},#{nick},#{name},#{password},#{phone},#{email},#{grade})
     </insert>
+
+    <select id="allUsers" resultType="users">
+        SELECT * FROM users
+    </select>
+
+    <update id="updatePs" parameterType="users">
+        UPDATE users
+        SET
+        ps = #{ps}
+        WHERE
+        userId = #{userId}
+    </update>
+
+    <select id="getProfessor" resultType="users">
+        SELECT *
+        FROM users
+        WHERE ps = 1
+    </select>
+
 </mapper>

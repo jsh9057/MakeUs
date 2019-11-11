@@ -35,31 +35,31 @@
     <!-- ============================================================== -->
     <div class="splash-container">
         <div class="card ">
-            <div class="card-header text-center"><a href="../index.html"><img class="logo-img" src="../assets/images/logo.png" alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
+            <div class="card-header text-center"><a href="../home"><img class="logo-img" src="../assets/images/logo.png" alt="logo"></a><span class="splash-description">서경대 컴퓨터과학과 홈페이지.</span></div>
             <div class="card-body">
             <!-- login form -->
                 <form id= "signin_form" method="post" action="/signinpost">
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="username" name="userId" type="text" placeholder="Username" autocomplete="off" required="">
+                        <input class="form-control form-control-lg" id="username" name="userId" type="text" placeholder="학번" autocomplete="off" required="">
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="password" name="password" type="password" placeholder="Password" required="">
+                        <input class="form-control form-control-lg" id="password" name="password" type="password" placeholder="비밀번호" required="">
                     </div>
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" checked="checked"><span class="custom-control-label">Remember Me</span>
+<%--                            <input class="custom-control-input" type="checkbox" checked="checked"><span class="custom-control-label">Remember Me</span>--%>
                         </label>
                     </div>
-                    <button id = "signin_btn" class="btn btn-primary btn-lg btn-block" type = "button" >Sign in</button>
+                    <button id = "signin_btn" class="btn btn-primary btn-lg btn-block" >Sign in</button>
                 </form>
             </div>
-            <div class="card-footer bg-white p-0  ">
+<%--            <div class="card-footer bg-white p-0  ">--%>
                 <div class="card-footer-item card-footer-item-bordered">
-                    <a href="#" class="footer-link">Create An Account</a></div>
-                <div class="card-footer-item card-footer-item-bordered">
-                    <a href="#" class="footer-link">Forgot Password</a>
-                </div>
-            </div>
+                    <a href="/signup" class="footer-link" >Create An Account</a></div>
+<%--                <div class="card-footer-item card-footer-item-bordered">--%>
+<%--                    <a href="#" class="footer-link">Forgot Password</a>--%>
+<%--                </div>--%>
+<%--            </div>--%>
         </div>
     </div>
   

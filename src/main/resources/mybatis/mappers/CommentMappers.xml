@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.skuniv.makeus.dao.CommentMapper">
+    <insert id="addComment" parameterType="Comment" useGeneratedKeys="true" keyProperty="commentNo">
+        INSERT INTO
+        comment (fk_commentPostNo, fk_commentNick, commentContents)
+        VALUES (#{fk_commentPostNo}, #{fk_commentNick}, #{commentContents})
+    </insert>
+    <select id="getCommentList" parameterType="int" resultType="comment">
+        SELECT *
+        FROM comment
+        WHERE
+        fk_commentPostNo = #{postNo}
+    </select>
+    
+    <delete id="deleteComment" parameterType="int">
+        DELETE
+        FROM comment
+        WHERE commentNo = #{commentNo}
+    </delete>
+
+    <select id="getCommentByNo" parameterType="int" resultType="comment">
+        SELECT *
+        FROM comment
+        WHERE commentNo = #{commentNo}
+    </select>
+
+
+</mapper>

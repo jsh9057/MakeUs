@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.skuniv.makeus.dao.ClassMapper">
+
+    <select id="classList" parameterType="int" resultType="Class">
+    SELECT
+    *
+    FROM class
+    WHERE
+    fk_professorId = #{userId}
+    ORDER  BY classNm ASC
+    </select>
+
+    <select id="classListAll" resultType="Class">
+    SELECT
+    *
+    FROM class
+    ORDER  BY classNm ASC
+    </select>
+    
+    <insert id="createClass" parameterType="Class" useGeneratedKeys="true" keyProperty="classId">
+    INSERT INTO class (classNm,fk_professorId,professorNm)
+    values (#{classNm},#{fk_professorId},#{professorNm})
+    </insert>
+
+    <select id="getClass" resultType="Class">
+    SELECT
+    *
+    FROM class
+    WHERE
+    classId=#{classId}
+    </select>
+
+    <delete id="deleteClass" parameterType="int">
+        DELETE FROM class
+        WHERE classId=#{classId}
+    </delete>
+
+</mapper>
