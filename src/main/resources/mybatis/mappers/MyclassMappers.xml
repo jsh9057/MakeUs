@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.skuniv.makeus.dao.MyclassMapper">
+
+    <select id="myclassList" parameterType="int" resultType="MyClass">
+    SELECT
+    *
+    FROM myclass
+    WHERE
+    fk_userId = #{userId}
+    AND
+    confirm=1
+    </select>
+
+    <select id="studentMyClassList" parameterType="int" resultType="MyclassEnrol">
+    SELECT myclassId, fk_userId, fk_classId, myclassNm, myclass.fk_professorId, confirm ,professorNm
+    FROM myclass, class
+    WHERE
+    fk_userId=#{userId} AND
+    fk_classId=classId
+    </select>
+
+    <insert id="tempMyclass" parameterType="MyClass">
+    INSERT INTO myclass (fk_userId, fk_classId, myclassNm, fk_professorId, name)
+    values (#{fk_userId},#{fk_classId},#{myclassNm},#{fk_professorId},#{name})
+    </insert>
+
+    <select id="allMyclassList" parameterType="int" resultType="Myclass">
+    SELECT *
+    FROM myclass
+    WHERE
+    fk_userId = #{userId}
+    </select>
+
+    <delete id="cancelMyclass" parameterType="int">
+    DELETE
+    FROM myclass
+    WHERE
+    fk_userId = #{userId} AND
+    fk_classId = #{fk_classId}
+    </delete>
+
+    <select id="getMyClassList" parameterType="int" resultType="Myclass">
+    SELECT *
+    FROM myclass
+    WHERE
+    fk_classId = #{fk_classId} ORDER BY fk_userId
+    </select>
+
+    <update id="myClassConfirm" parameterType="int">
+    UPDATE myclass
+    SET confirm = 1
+    WHERE fk_userId = #{userId} AND fk_classId=#{fk_classId}
+    </update>
+
+    <insert id="insertMyClass" parameterType="Myclass">
+    INSERT INTO myclass (fk_userId, fk_classId, myclassNm, fk_professorId, name, confirm)
+    values (#{fk_userId},#{fk_classId},#{myclassNm},#{fk_professorId},#{name},#{confirm})
+    </insert>
+
+    <select id="operatorMyClass" resultType="Myclass">
+    SELECT *
+    FROM myclass
+    WHERE fk_userId = fk_professorId
+    </select>
+
+    <select id="isMyClass" parameterType="int" resultType="int">
+    SELECT count(*)
+    FROM myclass
+    WHERE fk_userId = #{userId} AND fk_classId = #{classId} AND confirm = 1
+    </select>
+
+</mapper>
